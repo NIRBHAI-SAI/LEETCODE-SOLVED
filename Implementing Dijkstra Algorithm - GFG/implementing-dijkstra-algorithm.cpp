@@ -13,20 +13,24 @@ class Solution
     {
         vector<int> dist(V,INT_MAX);
         dist[S] = 0;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
-        pq.push({0,S});
+        set<pair<int,int>> s;
+        s.insert({0,S});
         
-        while(!pq.empty()){
-            int d = pq.top().first;
-            int node = pq.top().second;
-            pq.pop();
+        while(!s.empty()){
+            auto p = *(s.begin());
+            s.erase(p);
+            int node = p.second;
+            int d = p.first;
             
             for(auto it:adj[node]){
                 int w = it[1];
                 int v = it[0];
-                if(w+dist[node] < dist[v]){
-                    dist[v] = w+dist[node];
-                    pq.push({dist[v],v});
+                if(d+w < dist[v]){
+                    if(dist[v] != INT_MAX){
+                        s.erase({dist[v],v});
+                    }
+                    dist[v] = d+w;
+                    s.insert({dist[v],v});
                 }
             }
         }
