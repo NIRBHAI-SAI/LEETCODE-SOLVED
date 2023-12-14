@@ -3,6 +3,8 @@
 using namespace std;
 
 // } Driver Code Ends
+
+
 class Solution
 {
 	public:
@@ -10,32 +12,37 @@ class Solution
     int spanningTree(int V, vector<vector<int>> adj[])
     {
         // code here
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> q;
+        int count =0;
         vector<int> vis(V,0);
-        pq.push({0,0});
-        int ans=0;
-        
-        while(!pq.empty()){
-            
-            auto it = pq.top();
-            pq.pop();
-            int node = it.second;
-            int wt  = it.first;
-            
+        //<dist, node, parent>
+        q.push({0,{0,-1}});
+        while(!q.empty()){
+            auto p = q.top();
+            q.pop();
+            int dis = p.first;
+            int node = p.second.first;
+            int par = p.second.second;
             if(vis[node] == 1){
                 continue;
             }
-            
+            count += dis; 
             vis[node] = 1;
-            ans = ans + wt;
-            for(auto j : adj[node]){
-                if(vis[j[0]] == 0){
-                    pq.push({j[1],j[0]});
-                } 
+            for(auto it:adj[node]){
+                int adjnode = it[0];
+                int w = it[1];
+                if(vis[adjnode] == 0){
+                    q.push({w,{adjnode,node}});
+                }
             }
 
         }
-        return ans;
+        
+        
+        return count;
+        
+        
+        
     }
 };
 
