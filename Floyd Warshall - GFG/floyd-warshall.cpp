@@ -15,7 +15,7 @@ class Solution {
 	    for(int i =0;i<n;i++){
 	        for(int j=0;j<n;j++){
 	            if(matrix[i][j] == -1){
-	                matrix[i][j] = 1e4;
+	                matrix[i][j] = INT_MAX;
 	            }
 	            if(i == j) matrix[i][j] = 0;
 	        }
@@ -23,13 +23,14 @@ class Solution {
 	    for(int i=0;i<n;i++){
 	        for(int j=0;j<n;j++){
 	            for(int k=0;k<n;k++){
+	                if(matrix[j][i] == INT_MAX || matrix[i][k] == INT_MAX) continue; 
 	                matrix[j][k] = min(matrix[j][k] , matrix[j][i] + matrix[i][k]);
 	            }
 	        }
 	    }
 	    for(int i =0;i<n;i++){
 	        for(int j=0;j<n;j++){
-	            if(matrix[i][j] == 1e4){
+	            if(matrix[i][j] == INT_MAX){
 	                matrix[i][j] = -1;
 	            }
 	            
